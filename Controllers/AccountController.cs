@@ -27,12 +27,26 @@ namespace backend_resell_app.Controllers
             var user = await _unitOfWork.UserRepository.Authenticate(loginReq.Username, loginReq.Password);
             if(user == null)
             {
-                return Unauthorized();
+                return Unauthorized("Invalid Credentials.");
             }
 
             var loginResDto = new LoginResDto();
             loginResDto.UserName = user.Username;
             loginResDto.Token = CreateJWT(user);
+            return Ok(loginResDto);
+        }
+        [HttpPost("register")]
+        public async Task<IActionResult> Register(User user)
+        {
+            var addedUser = await _unitOfWork.UserRepository.Register(user.Username, user.Password, user.Email, user.PhoneNumber);
+            if (addedUser == null)
+            {
+                return Unauthorized("Invalid Credentials.");
+            }
+
+            var loginResDto = new LoginResDto();
+            loginResDto.UserName = addedUser.Username;
+            loginResDto.Token = CreateJWT(addedUser);
             return Ok(loginResDto);
         }
 
