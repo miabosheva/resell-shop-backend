@@ -1,4 +1,6 @@
 using backend_resell_app.Data;
+using backend_resell_app.Data.Repository;
+using backend_resell_app.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -19,6 +21,7 @@ builder.Services.AddCors(options =>
                .AllowAnyHeader();
     });
 });
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 var app = builder.Build();
 
