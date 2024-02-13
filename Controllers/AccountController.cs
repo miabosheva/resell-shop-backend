@@ -2,15 +2,22 @@
 using backend_resell_app.Interfaces;
 using backend_resell_app.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
 
 namespace backend_resell_app.Controllers
 {
     public class AccountController : BaseController
     {
         private readonly IUnitOfWork _unitOfWork;
-        public AccountController(IUnitOfWork uow)
+        private readonly IConfiguration _configuration;
+        public AccountController(IUnitOfWork uow, IConfiguration configuration)
         {
             this._unitOfWork = uow;
+            this._configuration = configuration;
         }
 
         // api/account/login
@@ -22,7 +29,37 @@ namespace backend_resell_app.Controllers
             {
                 return Unauthorized();
             }
-            return Ok(user);
+
+            var loginResDto = new LoginResDto();
+            loginResDto.UserName = user.Username;
+            loginResDto.Token = CreateJWT(user);
+            return Ok(loginResDto);
+        }
+
+        private string CreateJWT(User user)
+        {
+            var secretKey = _configuration.GetSection("AppSettings:Key").Value;
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
+
+            var claims = new Claim[]
+            {
+                new Claim(ClaimTypes.Name, user.Username),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
+            };
+
+            var signingCredentials = new SigningCredentials(
+                key, SecurityAlgorithms.HmacSha256Signature);
+
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(claims),
+                Expires = DateTime.UtcNow.AddMinutes(30),
+                SigningCredentials = signingCredentials
+            };
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
         }
     }
 }
