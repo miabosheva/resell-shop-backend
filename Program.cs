@@ -1,5 +1,7 @@
+using AutoMapper;
 using backend_resell_app.Data;
 using backend_resell_app.Data.Repository;
+using backend_resell_app.Helpers;
 using backend_resell_app.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -26,7 +28,13 @@ builder.Services.AddCors(options =>
 });
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+var mappingConfig = new MapperConfiguration(mc =>
+{
+    mc.AddProfile(new AutoMapperProfiles());
+});
 
+IMapper mapper = mappingConfig.CreateMapper();
+builder.Services.AddSingleton(mapper);
 var secretKey = builder.Configuration.GetSection("AppSettings:Key").Value;
 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
 

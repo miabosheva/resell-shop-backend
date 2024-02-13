@@ -24,7 +24,7 @@ namespace backend_resell_app.Data.Repository
 
         public async Task<IEnumerable<Product>> GetProductAsync(int id)
         {
-            var properties = await _context.Products.Where(p=> p.Id == id).ToListAsync();
+            var properties = await _context.Products.Include(p=>p.ProductType).Include(p => p.ConditionType).Where(p=> p.Id == id).ToListAsync();
             return properties;
         }
     }
