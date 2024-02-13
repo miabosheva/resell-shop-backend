@@ -11,6 +11,8 @@ namespace backend_resell_app.Data.Repository
 
         public IUserRepository UserRepository => new UserRepository(_context);
 
+        public IProductRepository ProductRepository => new ProductRepository(_context);
+
         public async Task<bool> SaveAsync()
         {
             return await _context.SaveChangesAsync() > 0;

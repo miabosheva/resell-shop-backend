@@ -3,17 +3,20 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using backend_resell_app.Data;
 
 #nullable disable
 
-namespace HomeworkApp.Data.Migrations
+namespace backend_resell_app.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240213204930_AddedPropertiesForProduct")]
+    partial class AddedPropertiesForProduct
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -60,7 +63,7 @@ namespace HomeworkApp.Data.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("Photos");
+                    b.ToTable("Photo");
                 });
 
             modelBuilder.Entity("backend_resell_app.Models.Product", b =>
@@ -74,8 +77,8 @@ namespace HomeworkApp.Data.Migrations
                     b.Property<int>("Auhtor")
                         .HasColumnType("int");
 
-                    b.Property<int>("CityId")
-                        .HasColumnType("int");
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ConditionTypeId")
                         .HasColumnType("int");
@@ -101,8 +104,6 @@ namespace HomeworkApp.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CityId");
 
                     b.HasIndex("ConditionTypeId");
 
@@ -185,12 +186,6 @@ namespace HomeworkApp.Data.Migrations
 
             modelBuilder.Entity("backend_resell_app.Models.Product", b =>
                 {
-                    b.HasOne("backend_resell_app.Models.City", "City")
-                        .WithMany()
-                        .HasForeignKey("CityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("backend_resell_app.Models.ProductConditionType", "ConditionType")
                         .WithMany()
                         .HasForeignKey("ConditionTypeId")
@@ -202,8 +197,6 @@ namespace HomeworkApp.Data.Migrations
                         .HasForeignKey("ProductTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("City");
 
                     b.Navigation("ConditionType");
 
