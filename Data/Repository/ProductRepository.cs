@@ -1,6 +1,7 @@
 ﻿using backend_resell_app.Interfaces;
 using backend_resell_app.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace backend_resell_app.Data.Repository
 {
@@ -21,9 +22,9 @@ namespace backend_resell_app.Data.Repository
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<Product>> GetProductAsync(string username)
+        public async Task<IEnumerable<Product>> GetProductAsync(int id)
         {
-            var properties = await _context.Products.ToListAsync();
+            var properties = await _context.Products.Where(p=> p.Id == id).ToListAsync();
             return properties;
         }
     }

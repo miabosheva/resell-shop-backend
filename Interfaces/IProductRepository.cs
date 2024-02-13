@@ -4,7 +4,7 @@ namespace backend_resell_app.Interfaces
 {
     public interface IProductRepository
     {
-        Task<IEnumerable<Product>> GetProductAsync(string username);
+        Task<IEnumerable<Product>> GetProductAsync(int id);
         void AddProduct(Product product);
         void DeleteProduct(int id);
     }

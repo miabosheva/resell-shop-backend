@@ -7,5 +7,7 @@ namespace backend_resell_app.Interfaces
         Task<User> Authenticate(string username, string password);
 
         Task<User> Register(string username, string password, string email, string phoneNumber);
+
+        int returnIdByUsername(string username);
     }
 }

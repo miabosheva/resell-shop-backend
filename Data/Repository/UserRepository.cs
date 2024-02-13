@@ -32,5 +32,11 @@ namespace backend_resell_app.Data.Repository
 
             return newUser;
         }
+
+        public int returnIdByUsername(string username)
+        {
+            int id = _context.Users.FirstOrDefault(x => x.Username == username).Id;
+            return id;
+        }
     }
 }
