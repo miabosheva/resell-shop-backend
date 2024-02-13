@@ -41,7 +41,7 @@ namespace backend_resell_app.Controllers
             var addedUser = await _unitOfWork.UserRepository.Register(user.Username, user.Password, user.Email, user.PhoneNumber);
             if (addedUser == null)
             {
-                return Unauthorized("Invalid Credentials.");
+                return Unauthorized("Registration failed.");
             }
 
             var loginResDto = new LoginResDto();
