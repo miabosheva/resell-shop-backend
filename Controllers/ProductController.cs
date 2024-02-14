@@ -43,5 +43,12 @@ namespace backend_resell_app.Controllers
             var addedProduct = await unitOfWork.ProductRepository.AddProduct(productList, userId, conditionType, productType);
             return Ok(addedProduct);
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteProduct(int id)
+        {
+            var deletedProduct = await unitOfWork.ProductRepository.DeleteProduct(id);
+            return Ok(deletedProduct);
+        }
     }
 }

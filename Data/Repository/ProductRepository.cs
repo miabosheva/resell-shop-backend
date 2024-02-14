@@ -36,11 +36,6 @@ namespace backend_resell_app.Data.Repository
                 return newProduct;
         }
 
-        public void DeleteProduct(int id)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<IEnumerable<Product>> GetProductAsync(int id)
         {
             var properties = await _context.Products.Include(p=>p.ProductType).Include(p => p.ConditionType).Where(p=> p.Auhtor == id).ToListAsync();
@@ -60,6 +55,15 @@ namespace backend_resell_app.Data.Repository
         public async Task<ProductType> GetTypeObjectFromName(string name)
         {
             return await _context.ProductTypes.FirstOrDefaultAsync(x => x.Name == name);
+        }
+
+        public async Task<Product> DeleteProduct(int id)
+        {
+            var product = await _context.Products.FirstOrDefaultAsync(x => x.Id == id);
+            
+            _context.Remove(product);
+            await _context.SaveChangesAsync();
+            return product;
         }
     }
 }

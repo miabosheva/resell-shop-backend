@@ -8,8 +8,8 @@ namespace backend_resell_app.Interfaces
         Task<IEnumerable<Product>> GetProductAsync(int id);
         Task<IEnumerable<Product>> GetAllProductsAsync();
         Task<Product> AddProduct(ProductListDto product, int userId, ProductConditionType productCondition, ProductType productType);
-        void DeleteProduct(int id);
         Task<ProductConditionType> GetConditionTypeObjectFromName(string name);
         Task<ProductType> GetTypeObjectFromName(string name);
+        Task<Product> DeleteProduct(int id);
     }
 }
