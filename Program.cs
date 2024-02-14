@@ -27,7 +27,7 @@ builder.Services.AddCors(options =>
     });
 });
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
+
 var mappingConfig = new MapperConfiguration(mc =>
 {
     mc.AddProfile(new AutoMapperProfiles());

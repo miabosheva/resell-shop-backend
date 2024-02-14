@@ -16,7 +16,7 @@ namespace backend_resell_app.Models
         public int ConditionTypeId { get; set; }
         public ProductConditionType ConditionType { get; set; }
         public int? Year { get; set; }
-        public ICollection<Photo> Photos { get; set; }
+        public ICollection<Photo>? Photos { get; set; }
         public string? Description { get; set; }
     }
 }
